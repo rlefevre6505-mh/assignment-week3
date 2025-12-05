@@ -11,38 +11,83 @@ async function upgradesToPage(apiData) {
   apiData = await getUpgradeData();
   for (let i = 0; i < apiData.length; i++) {
     const newUpgradeBox = document.createElement("p");
-    newUpgradeBox.textContent = `${apiData[i].name} \n cost: ${apiData[i].cost} oxygen`;
+    newUpgradeBox.textContent = `${apiData[i].name}:  ${apiData[i].cost}`;
     newUpgradeBox.classList.add("upgrade");
     newUpgradeBox.id = i;
-    console.log("appended");
     shopContainer.appendChild(newUpgradeBox);
+
+    newUpgradeBox.addEventListener("click", addUpgrade(), {}); //this runs on load, but shouldnt, as it will buy available upgrades automatically when possible!!!!!!!!!!
   }
 }
+
+// async function addEvents(apiData) {
+//   apiData = await getUpgradeData();
+//   const button = document.querySelector(".upgrade");
+//   button.addEventlistener("click", addUpgrade());
+// }
 
 const shopContainer = document.getElementById("shop-container");
 
 upgradesToPage(getUpgradeData());
 
-//Local Data Storage
+//values to update and replace previous locally stored data
+let cookieCountValue = 0;
+let cpsValue = 0;
 
+//Local Data Storage
 let userData = {
-  cookieCount: 0,
-  cps: 0,
-  name: "",
-  text: "colour",
+  cookieCount: cookieCountValue,
+  cps: cpsValue,
 };
-const stringifiedUserData = JSON.stringify(userData);
-localStorage.setItem("user data", stringifiedUserData);
+
+//function to save data (every second in loop)
+
+setInterval(function saveAndUpdateDisplay() {
+  // this function is not overwriting the locally saved data (or maybe it is, but the values have not updated?) !!!!!!!!!!!!!!!
+  const dataStringy = JSON.stringify(userData);
+  localStorage.setItem("userData", dataStringy);
+  console.log("data saved");
+  displayScore();
+}, 1000);
+
+console.log(cookieCountValue); //this value is not updating!!!!!!!!!!!!!!!!!!!!
+
+// function saveData(userData) {
+//   const stringifiedUserData = JSON.stringify(userData);
+//   localStorage.setItem("userData", stringifiedUserData);
+// }
+// saveData(userData);
 
 //event listener for cookie click
-const cookienaut = document.getElementById("cookienaut");
+const cookienautButton = document.getElementById("cookienaut");
 
-function saveData() {}
-
-cookienaut.addEventListener("click", function () {
-  console.log("clicked");
-  //add 1 to stored data
+cookienautButton.addEventListener("click", function () {
+  cookieCountValue = cookieCountValue + 1;
+  displayScore();
 });
 
 //display score info
-const scoreInfo = document.getElementById("score-info");
+const scoreInfo = document.getElementById("total-cookie-count");
+const cpsInfo = document.getElementById("cookies-per-second");
+
+function displayScore() {
+  scoreInfo.textContent = `Total Cookie Count: ${cookieCountValue}`;
+  cpsInfo.textContent = `Cookies Per Second: ${cpsValue}`;
+}
+displayScore();
+
+//use upgrade buttons
+
+const button = document.querySelector(".upgrade");
+
+button.addEventlistener("click", addUpgrade()); //This logs "Uncaught TypeError: Cannot read properties of null (reading 'addEventlistener')"
+
+function addUpgrade() {
+  if (cpsValue >= this.cost) {
+    cookieCountValue = cookieCountValue - this.cost;
+    cpsValue = cpsValue + this.increase;
+    console.log("upgrade button clicked");
+  } else {
+    console.log("too expensive!");
+  }
+}
