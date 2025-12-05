@@ -5,17 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cookies In Space!</title>
     <link rel="stylesheet" href="styles.css" />
-    <script src="app.js"></script>
+    <script src="app.js" defer></script>
   </head>
   <body>
     <header>
       <h1>Cookies In Space!</h1>
     </header>
-    <div id="score-info">
-      <p>total cookie count</p>
-      <p>cookies per second</p>
-    </div>
-    <img scr="#" alt="" />
-    <section id="shop-container"></section>
+    <main>
+      <section id="score-info">
+        <p>Total Cookie Count:</p>
+        <p id="total-cookie-count"></p>
+        <p>Cookies Per Second:</p>
+        <p id="cookies-per-second"></p>
+      </section>
+      <img
+        src="./images/cookie_astronaut.png"
+        alt="A pixel art cookie astronaut"
+        id="cookienaut"
+      />
+      <section id="shop-container"></section>
+    </main>
   </body>
 </html>
