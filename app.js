@@ -30,16 +30,20 @@ async function upgradesToPage(apiData) {
     shopContainer.appendChild(newUpgradeBox);
     newUpgradeBox.addEventListener("click", function () {
       if (userData.cookieCount >= apiData[i].cost) {
-        console.log("upgrade cliked - purchase successful");
+        const flashGreen = setInterval(function () {
+          newUpgradeBox.animate({ background: "#46d81a91" }, { duration: 200 });
+        }, 280);
+        setTimeout(function () {
+          clearInterval(flashGreen);
+        }, 600);
         userData.cookieCount = userData.cookieCount - apiData[i].cost;
         userData.cps = userData.cps + apiData[i].increase;
       } else {
-        console.log("upgrade cliked - rejected");
-        const flash = setInterval(function () {
+        const flashRed = setInterval(function () {
           newUpgradeBox.animate({ background: "#d81a3091" }, { duration: 100 });
         }, 280);
         setTimeout(function () {
-          clearInterval(flash);
+          clearInterval(flashRed);
         }, 1400);
       }
     });
@@ -126,9 +130,3 @@ guideButton.addEventListener("click", function () {
     openedWindow6.remove();
   });
 });
-
-// resetButton = document.getElementById("reset");
-// resetButton.addEventListener("click", function () {
-//   userData.cookieCount = 0;
-//   userData.cps = 0;
-// });
