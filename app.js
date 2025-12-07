@@ -10,7 +10,6 @@ function loadData() {
     return userData;
   }
 }
-
 userData = loadData();
 
 async function getUpgradeData() {
@@ -29,13 +28,15 @@ async function upgradesToPage(apiData) {
     newUpgradeBox.classList.add("upgrade");
     newUpgradeBox.id = i;
     shopContainer.appendChild(newUpgradeBox);
-    newUpgradeBox.addEventListener("click", function addUpgrade(item) {
-      if (userData.cookieCount >= item.cost) {
-        userData.cookieCount = userData.cookieCount - item.cost;
-        userData.cps = userData.cps + item.increase;
+    newUpgradeBox.addEventListener("click", function () {
+      if (userData.cookieCount >= apiData[i].cost) {
+        console.log("upgrade cliked - purchase successful");
+        userData.cookieCount = userData.cookieCount - apiData[i].cost;
+        userData.cps = userData.cps + apiData[i].increase;
       } else {
+        console.log("upgrade cliked - rejected");
         const flash = setInterval(function () {
-          newUpgradeBox.animate({ background: "#bd162991" }, { duration: 80 });
+          newUpgradeBox.animate({ background: "#d81a3091" }, { duration: 100 });
         }, 280);
         setTimeout(function () {
           clearInterval(flash);
@@ -44,7 +45,9 @@ async function upgradesToPage(apiData) {
     });
   }
 }
+
 const shopContainer = document.getElementById("shop-container");
+
 upgradesToPage(getUpgradeData());
 
 setInterval(function saveAndUpdateDisplay() {
@@ -55,7 +58,6 @@ setInterval(function saveAndUpdateDisplay() {
 }, 1000);
 
 const cookienautButton = document.getElementById("cookienaut");
-
 cookienautButton.addEventListener("click", function () {
   userData.cookieCount = userData.cookieCount += 1;
   displayScore();
@@ -115,7 +117,6 @@ guideButton.addEventListener("click", function () {
     colour2.classList.add("font-white");
   });
 
-  //change to exit properly
   const exitButton = document.createElement("button");
   exitButton.classList.add("exit-button");
   exitButton.textContent = "EXIT TO GAME";

@@ -179,7 +179,7 @@ footer > button {
 .exit-button {
   height: 5vh;
   background-color: rgba(0, 0, 0, 0.6);
-  color: rgb(250, 18, 18);
+  color: #c60118;
 }
 
 @media (min-width: 1000px) {
